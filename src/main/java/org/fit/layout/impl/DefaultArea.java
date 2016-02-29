@@ -47,9 +47,6 @@ public class DefaultArea extends DefaultContentRect implements Area
     /** Effective bounds of the area content. */
     private Rectangular contentBounds;
 
-    /** A grid of inserted elements */
-    private AreaGrid grid;
-    
     /** Position of this area in the parent grid */
     private Rectangular gp;
     
@@ -73,7 +70,6 @@ public class DefaultArea extends DefaultContentRect implements Area
         tags = new HashMap<Tag, Float>();
         setBounds(new Rectangular(r));
         setBackgroundColor(null);
-        grid = null;
         gp = new Rectangular();
         hsep = false;
         vsep = false;
@@ -86,7 +82,6 @@ public class DefaultArea extends DefaultContentRect implements Area
         boxes = new Vector<Box>(src.getBoxes());
         tags = new HashMap<Tag, Float>();
         contentBounds = (src.contentBounds == null) ? null : new Rectangular(src.contentBounds);
-        grid = null;
         gp = new Rectangular();
         vsep = src.vsep;
         hsep = src.hsep;
@@ -152,15 +147,19 @@ public class DefaultArea extends DefaultContentRect implements Area
     @Override
     public AreaTopology getTopology()
     {
-        if (topology == null)
-            topology = createTopology();
         return topology;
+    }
+    
+    public void setTopology(AreaTopology topology)
+    {
+        this.topology = topology;
     }
     
     @Override
     public void updateTopologies()
     {
-        createGrid();
+        if (topology != null)
+            topology.update();
     }
     
     /**
@@ -403,27 +402,8 @@ public class DefaultArea extends DefaultContentRect implements Area
     }
     
     //====================================================================================
-    // grid operations
+    // grid position
     //====================================================================================
-    
-    /**
-     * Creates the grid of areas from the child areas.
-     */
-    public void createGrid()
-    {
-        grid = new AreaGrid(this);
-    }
-    
-    /**
-     * Obtains the gird of contained areas.
-     * @return the grid
-     */
-    public AreaGrid getGrid()
-    {
-        if (grid == null)
-            createGrid();
-        return grid;
-    }
     
     /**
      * @return Returns the height of the area in the grid height in rows

@@ -21,10 +21,12 @@ import org.fit.layout.model.Rectangular;
 public class DefaultGridTopology implements AreaTopology
 {
     private DefaultArea area;
+    private AreaGrid grid;
     
     public DefaultGridTopology(DefaultArea area)
     {
         this.area = area;
+        grid = new AreaGrid(area);
     }
 
     public Area getArea()
@@ -33,15 +35,21 @@ public class DefaultGridTopology implements AreaTopology
     }
     
     @Override
+    public void update()
+    {
+        grid = new AreaGrid(area);
+    }
+    
+    @Override
     public int getTopologyWidth()
     {
-        return area.getGrid().getWidth();
+        return grid.getWidth();
     }
 
     @Override
     public int getTopologyHeight()
     {
-        return area.getGrid().getHeight();
+        return grid.getHeight();
     }
 
     @Override
@@ -77,20 +85,19 @@ public class DefaultGridTopology implements AreaTopology
     @Override
     public int getMinIndent()
     {
-        return area.getGrid().getMinIndent();
+        return grid.getMinIndent();
     }
 
     @Override
     public int getMaxIndent()
     {
-        return area.getGrid().getMaxIndent();
+        return grid.getMaxIndent();
     }
 
     @Override
     public void drawLayout(OutputDisplay disp)
     {
         Graphics ig = disp.getGraphics();
-        AreaGrid grid = area.getGrid();
         Color c = ig.getColor();
         ig.setColor(Color.BLUE);
         int xo = getArea().getX1();

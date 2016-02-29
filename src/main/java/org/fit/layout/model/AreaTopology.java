@@ -58,4 +58,6 @@ public interface AreaTopology
     
     public void drawLayout(OutputDisplay disp);
     
+    public void update();
+    
 }
